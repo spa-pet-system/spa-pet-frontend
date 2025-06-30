@@ -24,5 +24,12 @@ export const registerByPhone = async (name, phone, password) => {
     }
 }
 
-export const logout = () => removeToken();
+export const logout = async () => {
+    try {
+        await axios.post('/auth/logout')
+    } catch (error) {
+        console.error('Logout failed:', error); // xử lý lỗi cụ thể
+        throw error;
+    }
+}
 

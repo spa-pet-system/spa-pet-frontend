@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 import HomePage from '~/pages/customer/HomePage';
-import AdminPage from '../pages/AdminPage';
+import AdminPage from '../pages/admin/AdminPage';
 import PrivateRoute from './PrivateRoute';
 import AboutPage from '~/pages/customer/AboutPage';
 import ServicesPage from '~/pages/customer/ServicePage';

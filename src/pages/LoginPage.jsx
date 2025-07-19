@@ -31,9 +31,9 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
-  const onSubmit = async ({phone, password}) => {
-    try {
-      const data = await login(phone, password);
+  const onSubmit = async ({ phone, password }) => {
+  try {
+     const data = await login(phone, password);
       const profile = await getProfile();
       setUser(profile);
       toast.success('Đăng nhập thành công!');
@@ -45,7 +45,8 @@ export default function LoginPage() {
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-orange-50">

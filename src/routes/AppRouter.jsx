@@ -20,6 +20,8 @@ import ManagerProduct from '~/pages/admin/managerProduct/ManagerProduct';
 import AddProduct from '~/pages/admin/managerProduct/AddProduct';
 import EditProduct from '~/pages/admin/managerProduct/EditProduct';
 import BookingPage from '../pages/customer/BookingPage';
+import ProductDetailPage from "~/pages/customer/ProductDetailPage";
+import CartPage from "~/pages/customer/CartPage";
 
 export default function AppRouter() {
   return (
@@ -46,7 +48,23 @@ export default function AppRouter() {
       <Route path="/admin/products" element={<ManagerProduct />} />
       <Route path="/admin/products/add" element={<AddProduct />} />
       <Route path="/admin/products/edit/:id" element={<EditProduct />} />
-      {/* <Route path='/admin' element={<AdminPage/>}/> */}
+      
+      <Route
+        path="/cart"
+        element={
+          <PrivateRoute allowedRoles={["customer"]}>
+            <CartPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/products/:id"
+        element={
+          <PrivateRoute allowedRoles={["customer"]}>
+            <ProductDetailPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

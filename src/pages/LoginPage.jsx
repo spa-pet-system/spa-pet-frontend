@@ -31,21 +31,27 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
-  const onSubmit = async ({phone, password}) => {
-    try {
-      const data = await login(phone, password);
-      const profile = await getProfile();
-      setUser(profile);
-      toast.success('Đăng nhập thành công!');
+  const onSubmit = async ({ phone, password }) => {
+  try {
+    const data = await login(phone, password);
 
-      if (profile.role === 'admin') {
-        navigate('/admin');
-      }
-      else navigate('/customer');
-    } catch (err) {
-      toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
+    // Lưu token vào localStorage
+    localStorage.setItem("token", data.accessToken);
+
+    const profile = await getProfile();
+    setUser(profile);
+    toast.success('Đăng nhập thành công!');
+
+    if (profile.role === 'admin') {
+      navigate('/admin');
+    } else {
+      navigate('/customer');
     }
-  };
+  } catch (err) {
+    toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-orange-50">

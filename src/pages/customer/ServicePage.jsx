@@ -51,7 +51,7 @@ export default function ServicesPage() {
             </div> */}
 
 
-            <div className="px-6 md:px-28 pt-[140px]">
+            <div className="px-6 md:px-28 pt-[0]">
                 <Swiper
                     modules={[Pagination, Autoplay]}
                     pagination={{ clickable: true }}

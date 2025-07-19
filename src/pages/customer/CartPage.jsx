@@ -113,7 +113,7 @@ export default function CartPage() {
             <div className="flex gap-4 flex-wrap">
               <button
                 className="px-6 py-2 border border-gray-400 rounded hover:bg-gray-100"
-                onClick={() => navigate('/customer/shop')}
+                onClick={() => navigate('/shop')}
               >
                 ← Quay lại Shop
               </button>

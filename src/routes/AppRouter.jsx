@@ -26,6 +26,7 @@ import EditProduct from '~/pages/admin/managerProduct/EditProduct';
 import BookingPage from '../pages/customer/BookingPage';
 import ProductDetailPage from "~/pages/customer/ProductDetailPage";
 import CartPage from "~/pages/customer/CartPage";
+import OrdersPage from "~/pages/customer/OrdersPage";
 
 export default function AppRouter() {
   return (
@@ -35,6 +36,7 @@ export default function AppRouter() {
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="/customer/profile" element={<PrivateRoute allowedRoles={['customer']}><UserProfile /></PrivateRoute>} />
       <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />
+      <Route path="/customer/orders" element={<PrivateRoute allowedRoles={['customer']}><OrdersPage /></PrivateRoute>} />
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/service" element={<ServicesPage />} />

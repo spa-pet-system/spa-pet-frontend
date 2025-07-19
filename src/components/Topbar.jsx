@@ -81,7 +81,15 @@ export default function Topbar() {
                   >
                     Profile
                   </li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Orders</li>
+                    <li 
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        navigate('/customer/orders');
+                        setShowDropdown(false);
+                      }}
+                    >
+                      Orders
+                    </li>
                     <li onClick={handleClickOwnPets} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Own Pets</li>
                     <li 
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

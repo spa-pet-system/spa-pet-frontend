@@ -9,6 +9,9 @@ import ShopPage from '~/pages/customer/ShopPage';
 import RegisterPage from '~/pages/RegisterPage';
 import NewsPage from '~/pages/customer/NewsPage';
 import ContactPage from '~/pages/customer/ContactPage';
+import UserProfile from '~/pages/customer/UserProfile';
+import AppointmentHistory from '~/pages/customer/AppointmentHistory';
+import UnauthorizedPage from '~/pages/UnauthorizedPage';
 {/* admin */}
 import ManagerUser from '../pages/admin/managerUser/ManagerUser';
 import UserDetail from "../pages/admin/ManagerUser/UserDetail";
@@ -22,14 +25,18 @@ import EditProduct from '~/pages/admin/managerProduct/EditProduct';
 export default function AppRouter() {
   return (
     <Routes>
+      <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="/customer" element={<PrivateRoute allowedRoles={['customer']}><HomePage /></PrivateRoute>} />
       <Route path="/customer/about" element={<PrivateRoute allowedRoles={['customer']}><AboutPage /></PrivateRoute>} />
       <Route path="/customer/services" element={<PrivateRoute allowedRoles={['customer']}><ServicesPage /></PrivateRoute>} />
       <Route path="/customer/shop" element={<PrivateRoute allowedRoles={['customer']}><ShopPage /></PrivateRoute>} />
       <Route path="/customer/news" element={<PrivateRoute allowedRoles={['customer']}><NewsPage /></PrivateRoute>} />
       <Route path="/customer/contact" element={<PrivateRoute allowedRoles={['customer']}><ContactPage /></PrivateRoute>} />
+      <Route path="/customer/profile" element={<PrivateRoute allowedRoles={['customer']}><UserProfile /></PrivateRoute>} />
+      <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />
 
 
 

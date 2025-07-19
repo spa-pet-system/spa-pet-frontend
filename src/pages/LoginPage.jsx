@@ -41,7 +41,7 @@ export default function LoginPage() {
       if (profile.role === 'admin') {
         navigate('/admin');
       }
-      else navigate('/customer');
+      else navigate('/');
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
     }

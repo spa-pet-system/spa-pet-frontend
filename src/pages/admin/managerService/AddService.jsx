@@ -8,9 +8,10 @@ const initialState = {
   type: "grooming",
   description: "",
   detail: "",
-  price: "",
+  // price: "",
   duration: "",
   image: "",
+  slot: "",
   isActive: true
 };
 
@@ -26,7 +27,7 @@ const AddService = () => {
     if (!form.name.trim()) newErrors.name = "Tên dịch vụ là bắt buộc";
     if (!form.type) newErrors.type = "Loại dịch vụ là bắt buộc";
     if (!form.description.trim()) newErrors.description = "Mô tả là bắt buộc";
-    if (form.price === "" || isNaN(form.price) || Number(form.price) < 0) newErrors.price = "Giá phải là số không âm";
+    // if (form.price === "" || isNaN(form.price) || Number(form.price) < 0) newErrors.price = "Giá phải là số không âm";
     if (form.duration === "" || isNaN(form.duration) || Number(form.duration) < 1) newErrors.duration = "Thời lượng phải là số >= 1";
     return newErrors;
   };
@@ -67,7 +68,7 @@ const AddService = () => {
     try {
       await axios.post("/admin/services", {
         ...form,
-        price: Number(form.price),
+        // price: Number(form.price),
         duration: Number(form.duration)
       });
       navigate("/admin/services");
@@ -107,14 +108,19 @@ const AddService = () => {
               <label className="block font-medium mb-1">Chi tiết</label>
               <textarea name="detail" value={form.detail} onChange={handleChange} className="w-full border rounded px-3 py-2" />
             </div>
-            <div>
+            {/* <div>
               <label className="block font-medium mb-1">Giá (VNĐ) <span className="text-red-500">*</span></label>
               <input name="price" type="number" min="0" value={form.price} onChange={handleChange} required className="w-full border rounded px-3 py-2" placeholder="Nhập giá dịch vụ" />
               {errors.price && <div className="text-red-500 text-sm mt-1">{errors.price}</div>}
-            </div>
+            </div> */}
             <div>
               <label className="block font-medium mb-1">Thời lượng (phút) <span className="text-red-500">*</span></label>
               <input name="duration" type="number" min="1" value={form.duration} onChange={handleChange} required className="w-full border rounded px-3 py-2" placeholder="Nhập thời lượng" />
+              {errors.duration && <div className="text-red-500 text-sm mt-1">{errors.duration}</div>}
+            </div>
+             <div>
+              <label className="block font-medium mb-1">Số Slot <span className="text-red-500">*</span></label>
+              <input name="slot" type="number" min="1" value={form.slot} onChange={handleChange} required className="w-full border rounded px-3 py-2" placeholder="Nhập thời lượng" />
               {errors.duration && <div className="text-red-500 text-sm mt-1">{errors.duration}</div>}
             </div>
             <div>

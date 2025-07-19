@@ -60,7 +60,7 @@ const ManagerService = () => {
                     <th className="px-3 py-2 border text-center">STT</th>
                     <th className="px-3 py-2 border text-center">Tên</th>
                     <th className="px-3 py-2 border text-center">Loại</th>
-                    <th className="px-3 py-2 border text-center">Giá</th>
+                    {/* <th className="px-3 py-2 border text-center">Giá</th> */}
                     <th className="px-3 py-2 border text-center">Thời lượng (phút)</th>
                     <th className="px-3 py-2 border text-center">Trạng thái</th>
                     <th className="px-3 py-2 border text-center">Hành động</th>
@@ -72,7 +72,7 @@ const ManagerService = () => {
                       <td className="px-3 py-2 border text-center">{idx + 1}</td>
                       <td className="px-3 py-2 border">{service.name}</td>
                       <td className="px-3 py-2 border">{service.type}</td>
-                      <td className="px-3 py-2 border">{service.price.toLocaleString()} đ</td>
+                      {/* <td className="px-3 py-2 border">{service.price.toLocaleString()} đ</td> */}
                       <td className="px-3 py-2 border text-center">{service.duration}</td>
                       <td className="px-3 py-2 border text-center">
                         <span className={`px-2 py-1 rounded text-xs font-semibold ${service.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>

@@ -14,12 +14,12 @@ export default function Navbar() {
                 <span className="text-xl font-bold text-orange-500">Patte</span>
             </div>
             <nav className="hidden md:flex gap-6 font-medium text-gray-800">
-                <NavLink to="/customer" end className={({ isActive }) => isActive ? activeClass : normalClass}>Home</NavLink>
-                <NavLink to="/customer/about" className={({ isActive }) => isActive ? activeClass : normalClass}>About</NavLink>
-                <NavLink to="/customer/services" className={({ isActive }) => isActive ? activeClass : normalClass}>Services</NavLink>
-                <NavLink to="/customer/shop" className={({ isActive }) => isActive ? activeClass : normalClass}>Shop</NavLink>
-                <NavLink to="/customer/news" className={({ isActive }) => isActive ? activeClass : normalClass}>News</NavLink>
-                <NavLink to="/customer/contact" className={({ isActive }) => isActive ? activeClass : normalClass}>Contact</NavLink>
+                <NavLink to="/" end className={({ isActive }) => isActive ? activeClass : normalClass}>Home</NavLink>
+                <NavLink to="/about" className={({ isActive }) => isActive ? activeClass : normalClass}>About</NavLink>
+                <NavLink to="/service" className={({ isActive }) => isActive ? activeClass : normalClass}>Services</NavLink>
+                <NavLink to="/shop" className={({ isActive }) => isActive ? activeClass : normalClass}>Shop</NavLink>
+                <NavLink to="/news" className={({ isActive }) => isActive ? activeClass : normalClass}>News</NavLink>
+                <NavLink to="/contact" className={({ isActive }) => isActive ? activeClass : normalClass}>Contact</NavLink>
             </nav>
             <div className="flex items-center gap-4 text-gray-800">
                 <FaSearch />

@@ -40,6 +40,8 @@ export default function BookingStep1({
       if (selectedService && selectedDate) {
         try {
           const data = await getSlotStatus(selectedService, selectedDate);
+          console.log(data);
+          
           setSlotStatus(data);
         } catch (err) {
           console.error("Lỗi khi load slot:", err);
@@ -52,7 +54,7 @@ export default function BookingStep1({
 
   useEffect(() => {
     if (services.length > 0 && !selectedService) {
-      setSelectedService(services[0]._id); // hoặc services[0].id nếu bạn dùng id thường
+      setSelectedService(services[0]._id);
     }
   }, [services, selectedService]);
 

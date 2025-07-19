@@ -1,6 +1,7 @@
 import Topbar from "~/components/Topbar";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
+import BookingFloatingButton from "~/components/BookingFloatingButton";
 
 // export default function MainLayout({ children }) {
 //   return (
@@ -27,6 +28,7 @@ export default function MainLayout({ children }) {
 
       <main className="flex-1">
         {children}
+        <BookingFloatingButton />
       </main>
 
       {/* Footer luôn ở dưới cùng */}

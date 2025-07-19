@@ -16,70 +16,89 @@ export default function BookingPage() {
 
   return (
     <MainLayout>
-    <div className="max-w-5xl mx-auto p-4 mt-[140px]">
-      {/* Step indicator */}
-      <div className="flex justify-between items-center mb-6">
-        {[1, 2, 3].map((s) => (
-          <div
-            key={s}
-            className={`w-10 h-10 flex items-center justify-center rounded-full font-bold border-2 ${
-              step === s ? 'bg-yellow-600 text-white' : 'border-gray-400 text-gray-600'
-            }`}
-          >
-            {s}
+      {/* Background gradient riêng cho BookingPage */}
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 py-10">
+        <div className="max-w-5xl mx-auto px-4 mt-32">
+
+          {/* Step indicator */}
+          <div className="relative flex justify-between items-center mb-8 px-6">
+            {/* Đường line giữa các bước */}
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-300 transform -translate-y-1/2 z-0"></div>
+
+            {[1, 2, 3].map((s) => (
+              <div key={s} className="relative z-10 flex flex-col items-center">
+                <div
+                  className={`w-14 h-14 flex items-center justify-center rounded-full font-bold border-2 transition-all ${step === s
+                      ? 'bg-yellow-600 text-white border-yellow-600 scale-110'
+                      : 'border-gray-400 text-gray-600 bg-white'
+                    }`}
+                >
+                  {s}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* Step content */}
-      {step === 1 && (
-        <BookingStep1
-          selectedService={selectedService}
-          setSelectedService={setSelectedService}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-        />
-      )}
-      {step === 2 && (
-        <BookingStep2
-          formData={formData}
-          setFormData={setFormData}
-          selectedService={selectedService}
-          selectedDate={selectedDate}
-          selectedTime={selectedTime}
-        />
-      )}
-      {step === 3 && (
-        <BookingStep3
-          selectedService={selectedService}
-          selectedDate={selectedDate}
-          selectedTime={selectedTime}
-          formData={formData}
-        />
-      )}
 
-      {/* Navigation */}
-      <div className="mt-6 flex justify-between">
-        {step > 1 && (
-          <button
-            onClick={handleBack}
-            className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
-          >
-            Quay lại
-          </button>
-        )}
-        {step < 3 && (
-          <button
-            onClick={handleNext}
-            className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded ml-auto"
-          >
-            Tiếp theo
-          </button>
-        )}
+          {/* Title theo từng bước */}
+          <h2 className="text-2xl font-bold text-orange-600 text-center mb-6">
+            {step === 1 && 'Chọn dịch vụ và thời gian'}
+            {step === 2 && 'Thông tin người đặt và thú cưng'}
+            {step === 3 && 'Xác nhận đặt lịch'}
+          </h2>
+
+          {/* Nội dung từng bước */}
+          <div className="bg-white shadow-xl rounded-xl p-6">
+            {step === 1 && (
+              <BookingStep1
+                selectedService={selectedService}
+                setSelectedService={setSelectedService}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+              />
+            )}
+            {step === 2 && (
+              <BookingStep2
+                formData={formData}
+                setFormData={setFormData}
+                selectedService={selectedService}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+              />
+            )}
+            {step === 3 && (
+              <BookingStep3
+                selectedService={selectedService}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+                formData={formData}
+              />
+            )}
+          </div>
+
+          {/* Nút điều hướng */}
+          <div className="mt-6 flex justify-between">
+            {step > 1 && (
+              <button
+                onClick={handleBack}
+                className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded text-gray-700 font-semibold"
+              >
+                ← Quay lại
+              </button>
+            )}
+            {step < 3 && (
+              <button
+                onClick={handleNext}
+                className="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-2 rounded font-semibold ml-auto flex items-center gap-1"
+              >
+                Tiếp theo <span>▶</span>
+              </button>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
     </MainLayout>
   );
 }

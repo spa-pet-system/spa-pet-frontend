@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { createPet } from "~/services/petService";
 
-export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onSelect }) {
+export default function AddPetForBooking({ onClose, onAdded }) {
   const [formData, setFormData] = useState({
     name: "",
     petType: "dog",
@@ -14,27 +14,20 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const newPet = await createPet(formData);
-      toast.success("🐶 Thêm thú cưng thành công!");
-
-      if (onAdded) onAdded(); // Load lại danh sách nếu cần
-      if (addAndSelect && onSelect) {
-        onSelect(newPet); // Gửi về BookingStep2 để setPet
-      }
-
+      console.log("NEW-PET: ", newPet);
+      
+      toast.success("🐾 Thêm thú cưng thành công!");
+      if (onAdded) onAdded(newPet); // Gửi pet mới lên cho modal xử lý
       onClose(); // Đóng form
     } catch (error) {
-      toast.error("❌ Thêm thú cưng thất bại.");
+      toast.error("❌ Thêm thất bại!");
       console.error(error);
     }
   };
@@ -116,7 +109,7 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
           </div>
 
           <div>
-            <label className="block font-semibold">Link ảnh (tùy chọn)</label>
+            <label className="block font-semibold">Link ảnh (tuỳ chọn)</label>
             <input
               type="text"
               name="image"

@@ -13,7 +13,7 @@ export default function ServiceDetailPage() {
     try {
       const service = await getServiceBySlug(slug);
       console.log(`getServiceBySlug ${slug}: `, service);
-      
+
       setService(service);
     } catch (error) {
       console.log(error);
@@ -38,8 +38,8 @@ export default function ServiceDetailPage() {
             {service ? service.description : "Đang tải mô tả dịch vụ..."}
           </p>
           <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full">
-              Get Appointment
-            </button>
+            Get Appointment
+          </button>
         </div>
         <div className="flex-1 mt-10 md:mt-0">
           {service?.image && (
@@ -63,25 +63,15 @@ export default function ServiceDetailPage() {
             </h2>
 
             {/* Các bước thực hiện */}
-            {service.detail && (
-              <div>
-                <h3 className="text-2xl font-semibold text-orange-500 mb-4">Quy trình dịch vụ</h3>
-                <div className="space-y-4">
-                  {service.detail
-                    .split("|")
-                    .filter(step => step.trim() !== "")
-                    .map((step, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start gap-3 bg-orange-50 p-4 rounded-lg shadow-sm border-l-4 border-orange-400"
-                      >
-                        <div className="text-orange-600 font-bold text-lg">{index + 1}.</div>
-                        <div className="text-gray-800">{step.trim()}</div>
-                      </div>
-                    ))}
-                </div>
+            {service.detail.map((step, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-3 bg-orange-50 p-4 rounded-lg shadow-sm border-l-4 border-orange-400"
+              >
+                <div className="text-orange-600 font-bold text-lg">{index + 1}.</div>
+                <div className="text-gray-800">{step}</div>
               </div>
-            )}
+            ))}
 
             {/* Thông tin chung */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-800 mt-8">
@@ -100,7 +90,7 @@ export default function ServiceDetailPage() {
                   <p>{service.duration} phút</p>
                 </div>
               </div>
-{/* 
+              {/* 
               <div className="flex items-start gap-3">
                 <FaDollarSign className="text-2xl text-orange-500 mt-1" />
                 <div>

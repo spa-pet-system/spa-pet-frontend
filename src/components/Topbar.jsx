@@ -72,10 +72,35 @@ export default function Topbar() {
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg text-gray-700">
                   <ul className="py-2">
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Profile</li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Orders</li>
+                    <li 
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      navigate('/customer/profile');
+                      setShowDropdown(false);
+                    }}
+                  >
+                    Profile
+                  </li>
+                    <li 
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        navigate('/customer/orders');
+                        setShowDropdown(false);
+                      }}
+                    >
+                      Orders
+                    </li>
                     <li onClick={handleClickOwnPets} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Own Pets</li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Wishlist</li>
+                    <li 
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      navigate('/customer/appointments');
+                      setShowDropdown(false);
+                    }}
+                  >
+                    Appointment History
+                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Wishlist</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Address Book</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Change Password</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Support</li>

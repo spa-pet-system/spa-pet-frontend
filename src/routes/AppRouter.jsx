@@ -27,12 +27,16 @@ import BookingPage from '../pages/customer/BookingPage';
 import ProductDetailPage from "~/pages/customer/ProductDetailPage";
 import CartPage from "~/pages/customer/CartPage";
 import OrdersPage from "~/pages/customer/OrdersPage";
+import ResetPasswordPage from '~/pages/ResetPasswordPage';
+import ForgotPasswordPage from '~/pages/ForgotPasswordPage';
 
 export default function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="/customer/profile" element={<PrivateRoute allowedRoles={['customer']}><UserProfile /></PrivateRoute>} />
       <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />

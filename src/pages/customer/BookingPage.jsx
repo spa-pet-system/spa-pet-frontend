@@ -18,7 +18,7 @@ export default function BookingPage() {
     <MainLayout>
       {/* Background gradient riêng cho BookingPage */}
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50 py-10">
-        <div className="max-w-5xl mx-auto px-4 mt-32">
+        <div className="max-w-5xl mx-auto px-4">
 
           {/* Step indicator */}
           <div className="relative flex justify-between items-center mb-8 px-6">

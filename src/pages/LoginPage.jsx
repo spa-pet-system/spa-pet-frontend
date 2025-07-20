@@ -94,7 +94,7 @@ export default function LoginPage() {
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Nhớ mật khẩu
               </label>
-              <a href="#" className="text-orange-500 hover:underline">Quên mật khẩu?</a>
+              <Link to="/forgot-password" className="text-orange-500 hover:underline">Quên mật khẩu?</Link>
             </div>
 
             <div className="flex items-center my-4">

@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 import { createPet } from "~/services/petService";
 
 export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onSelect }) {
+  const [selectedFile, setSelectedFile] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     petType: "dog",
     breed: "",
     age: "",
     weight: "",
-    image: "",
   });
 
   const handleChange = (e) => {
@@ -22,20 +22,32 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const newPet = await createPet(formData);
-      toast.success("🐶 Thêm thú cưng thành công!");
-
-      if (onAdded) onAdded(); // Load lại danh sách nếu cần
-      if (addAndSelect && onSelect) {
-        onSelect(newPet); // Gửi về BookingStep2 để setPet
+      const submitData = new FormData();
+      submitData.append("name", formData.name);
+      submitData.append("petType", formData.petType);
+      submitData.append("breed", formData.breed);
+      submitData.append("age", formData.age);
+      submitData.append("weight", formData.weight);
+      if (selectedFile) {
+        submitData.append("image", selectedFile);
       }
 
-      onClose(); // Đóng form
-    } catch (error) {
+      console.log("📦 FormData gửi đi:");
+      for (let pair of submitData.entries()) {
+        console.log(`${pair[0]}:`, pair[1]);
+      }
+
+      const newPet = await createPet(submitData);
+      toast.success("🐶 Thêm thú cưng thành công!");
+
+      if (onAdded) onAdded();
+      if (addAndSelect && onSelect) onSelect(newPet);
+
+      onClose();
+    } catch (err) {
       toast.error("❌ Thêm thú cưng thất bại.");
-      console.error(error);
+      console.error(err);
     }
   };
 
@@ -51,6 +63,7 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
         <h2 className="text-2xl font-bold text-orange-600 mb-4">➕ Thêm thú cưng</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Tên thú cưng */}
           <div>
             <label className="block font-semibold">Tên thú cưng</label>
             <input
@@ -64,6 +77,7 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
             />
           </div>
 
+          {/* Loại thú */}
           <div>
             <label className="block font-semibold">Loại</label>
             <select
@@ -77,6 +91,7 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
             </select>
           </div>
 
+          {/* Giống */}
           <div>
             <label className="block font-semibold">Giống</label>
             <input
@@ -85,10 +100,11 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
               value={formData.breed}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-              placeholder="Phốc Sóc"
+              placeholder="Poodle, Phốc Sóc..."
             />
           </div>
 
+          {/* Tuổi & Cân nặng */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block font-semibold">Tuổi (năm)</label>
@@ -115,18 +131,35 @@ export default function AddPetForm({ onClose, onAdded, addAndSelect = false, onS
             </div>
           </div>
 
+          {/* Ảnh */}
           <div>
-            <label className="block font-semibold">Link ảnh (tùy chọn)</label>
+            <label className="block font-semibold mb-1">Ảnh thú cưng (chọn từ máy)</label>
             <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-              placeholder="https://..."
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith("image/")) {
+                  setSelectedFile(file);
+                } else {
+                  toast.error("❌ File không hợp lệ!");
+                }
+              }}
+              className="w-full border px-3 py-2 rounded"
             />
+            {selectedFile && (
+              <div className="mt-3">
+                <p className="text-sm text-gray-600 mb-1">📸 Xem trước ảnh:</p>
+                <img
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded border"
+                />
+              </div>
+            )}
           </div>
 
+          {/* Submit */}
           <div className="text-right">
             <button
               type="submit"

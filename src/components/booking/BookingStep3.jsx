@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "~/contexts/AuthContext";
 import { createNewAppointment } from '~/services/appointmentService'
@@ -11,6 +11,7 @@ export default function BookingStep3({
   selectedTime,
   formData,
 }) {
+  const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate()
 
@@ -27,6 +28,9 @@ export default function BookingStep3({
 
   }
   const handleSubmit = async () => {
+    if (loading) return; // Tránh gọi nhiều lần
+    setLoading(true);
+
     const dataSubmit = {
       user: user._id,
       pet: formData.pet._id,
@@ -34,13 +38,18 @@ export default function BookingStep3({
       date: selectedDate,
       timeSlot: selectedTime,
       note: formData.note
+    };
+
+    try {
+      const data = await createAppointment(dataSubmit);
+      console.log("data: ", data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false); // Dù thành công hay lỗi vẫn mở lại nút
     }
+  };
 
-    const data = await createAppointment(dataSubmit)
-
-    console.log("data: ", data);
-
-  }
 
   return (
     <div className="space-y-6 px-4">
@@ -104,11 +113,17 @@ export default function BookingStep3({
       {/* Nút xác nhận */}
       <div className="text-center mt-6">
         <button
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold text-lg shadow transition duration-200"
+          disabled={loading}
+          className={`px-6 py-3 rounded-lg font-bold text-lg shadow transition duration-200
+    ${loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700 text-white"
+            }`}
           onClick={handleSubmit}
         >
-          ✅ Xác nhận đặt lịch
+          {loading ? "⏳ Đang xử lý..." : "✅ Xác nhận đặt lịch"}
         </button>
+
       </div>
     </div>
   );

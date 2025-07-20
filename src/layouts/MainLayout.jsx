@@ -27,7 +27,7 @@ export default function MainLayout({ children }) {
       </header>
 
       {/* 👇 Đẩy nội dung xuống để tránh bị che */}
-      <main className="flex-1 pt-[140px] bg-gray-50">
+      <main className="flex-1 pt-[100px] bg-gray-50">
         {children}
         <BookingFloatingButton />
       </main>

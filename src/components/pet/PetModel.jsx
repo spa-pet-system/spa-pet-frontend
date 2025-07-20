@@ -55,18 +55,34 @@ export default function PetModal({ onClose, selectable = false, onSelect }) {
                 <div
                   key={pet._id}
                   onClick={() => handleSelectPet(pet)}
-                  className={`border p-4 rounded shadow transition ${
-                    selectable ? "cursor-pointer hover:bg-orange-100" : ""
-                  }`}
+                  className={`border p-4 rounded shadow transition flex gap-4 ${selectable ? "cursor-pointer hover:bg-orange-100" : ""
+                    }`}
                 >
-                  <p><strong>Tên:</strong> {pet.name}</p>
-                  <p><strong>Loại:</strong> {pet.petType === "dog" ? "Chó" : "Mèo"}</p>
-                  <p><strong>Giống:</strong> {pet.breed}</p>
-                  <p><strong>Tuổi:</strong> {pet.age} năm</p>
-                  <p><strong>Cân nặng:</strong> {pet.weight} kg</p>
+                  {/* Ảnh thú cưng */}
+                  {pet.image ? (
+                    <img
+                      src={pet.image}
+                      alt={pet.name}
+                      className="w-24 h-24 object-cover rounded border"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 flex items-center justify-center bg-gray-100 border rounded text-sm text-gray-500">
+                      No Image
+                    </div>
+                  )}
+
+                  {/* Thông tin */}
+                  <div className="flex-1 space-y-1">
+                    <p><strong>Tên:</strong> {pet.name}</p>
+                    <p><strong>Loại:</strong> {pet.petType === "dog" ? "Chó" : "Mèo"}</p>
+                    <p><strong>Giống:</strong> {pet.breed}</p>
+                    <p><strong>Tuổi:</strong> {pet.age} năm</p>
+                    <p><strong>Cân nặng:</strong> {pet.weight} kg</p>
+                  </div>
                 </div>
               ))}
             </div>
+
           )}
 
           <div className="mt-6 text-center">

@@ -33,3 +33,13 @@ export const logout = async () => {
     }
 }
 
+export const sendForgotPasswordRequest = async ({ phone }) => {
+  return await axios.post('/auth/forgot-password', { phone });
+};
+
+export const resetPassword = async (token, newPassword, confirmPassword) => {
+  const res = await axios.post(`/auth/reset-password/${token}`, { password: newPassword, confirmPassword });
+  return res.data;
+};
+
+

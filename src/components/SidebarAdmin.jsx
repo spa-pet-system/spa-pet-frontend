@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { FaTachometerAlt, FaUsers, FaDog, FaConciergeBell, FaBoxOpen, FaClipboardList, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
 
 const menuItems = [
@@ -8,6 +8,7 @@ const menuItems = [
   { label: "Quản lý sản phẩm", icon: <FaBoxOpen />, to: "/admin/products" },
   { label: "Quản lý đơn hàng", icon: <FaClipboardList />, to: "/admin/orders" },
   { label: "Quản lý lịch hẹn", icon: <FaCalendarAlt />, to: "/admin/appointments" },
+  { label: "Gửi thông báo", icon: <FaConciergeBell />, to: "/admin/send-notification" },
   { label: "Đăng xuất", icon: <FaSignOutAlt />, to: "/logout" },
 ];
 

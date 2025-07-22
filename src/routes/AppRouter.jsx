@@ -29,6 +29,8 @@ import CartPage from "~/pages/customer/CartPage";
 import OrdersPage from "~/pages/customer/OrdersPage";
 import ResetPasswordPage from '~/pages/ResetPasswordPage';
 import ForgotPasswordPage from '~/pages/ForgotPasswordPage';
+import SendNotificationPage from '../pages/admin/SendNotificationPage';
+import NotificationsPage from '../pages/customer/NotificationsPage';
 
 export default function AppRouter() {
   return (
@@ -41,6 +43,7 @@ export default function AppRouter() {
       <Route path="/customer/profile" element={<PrivateRoute allowedRoles={['customer']}><UserProfile /></PrivateRoute>} />
       <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />
       <Route path="/customer/orders" element={<PrivateRoute allowedRoles={['customer']}><OrdersPage /></PrivateRoute>} />
+      <Route path="/customer/notifications" element={<PrivateRoute allowedRoles={['customer']}><NotificationsPage /></PrivateRoute>} />
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/service" element={<ServicesPage />} />
@@ -61,6 +64,7 @@ export default function AppRouter() {
       <Route path="/admin/products" element={<ManagerProduct />} />
       <Route path="/admin/products/add" element={<AddProduct />} />
       <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+      <Route path="/admin/send-notification" element={<PrivateRoute allowedRoles={['admin']}><SendNotificationPage /></PrivateRoute>} />
       
       <Route
         path="/cart"

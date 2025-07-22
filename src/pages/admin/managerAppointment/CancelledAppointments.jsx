@@ -146,6 +146,8 @@ function getStatusText(status) {
   switch (status) {
     case 'pending': return 'Chờ xác nhận';
     case 'confirmed': return 'Đã xác nhận';
+    case 'in_progress': return 'Đang tiến hành';
+    case 'awaiting_payment':  return 'Chờ thanh toán'; 
     case 'completed': return 'Hoàn thành';
     case 'cancelled': return 'Đã huỷ';
     case 'request_cancel': return 'Yêu cầu huỷ';

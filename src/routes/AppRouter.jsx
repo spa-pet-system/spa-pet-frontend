@@ -37,6 +37,8 @@ import NotificationsPage from '../pages/customer/NotificationsPage';
 import ManagerOrder from '../pages/admin/managerOrder/ManagerOrder';
 import PendingAppointments from '../pages/admin/managerAppointment/PendingAppointments';
 import ConfirmedAppointments from '../pages/admin/managerAppointment/ConfirmedAppointments';
+import InProcessAppointments from '../pages/admin/managerAppointment/InProcessAppointments';
+import WaitingPayementAppointments from '../pages/admin/managerAppointment/WaitingPaymentAppoiment';
 import CompletedAppointments from '../pages/admin/managerAppointment/CompletedAppointments';
 import CancelledAppointments from '../pages/admin/managerAppointment/CancelledAppointments';
 import RequestCancelAppointments from '../pages/admin/managerAppointment/RequestCancelAppointments';
@@ -53,9 +55,9 @@ export default function AppRouter() {
       <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="/customer/profile" element={<PrivateRoute allowedRoles={['customer']}><UserProfile /></PrivateRoute>} />
-      <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />
+    
       <Route path="/customer/orders" element={<PrivateRoute allowedRoles={['customer']}><OrdersPage /></PrivateRoute>} />
-      <Route path="/customer/notifications" element={<PrivateRoute allowedRoles={['customer']}><NotificationsPage /></PrivateRoute>} />
+ 
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/service" element={<ServicesPage />} />
@@ -90,9 +92,12 @@ export default function AppRouter() {
       <Route path="/admin/orders/detail/:id" element={<OrderDetail />} />
       <Route path="/admin/appointments/pending" element={<PendingAppointments />} />
       <Route path="/admin/appointments/confirmed" element={<ConfirmedAppointments />} />
+      <Route path="/admin/appointments/in_progress" element={<InProcessAppointments />} />
+      <Route path="/admin/appointments/waiting_payment" element={<WaitingPayementAppointments />} />
       <Route path="/admin/appointments/completed" element={<CompletedAppointments />} />
       <Route path="/admin/appointments/cancelled" element={<CancelledAppointments />} />
       <Route path="/admin/appointments/request-cancel" element={<RequestCancelAppointments />} />
+      
       <Route path="/admin/appointments/detail/:id" element={<BookingDetail />} />
 
       
@@ -112,6 +117,18 @@ export default function AppRouter() {
           </PrivateRoute>
         }
       />
+
+
+
+        <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />
+
+
+             <Route path="/customer/notifications" element={<PrivateRoute allowedRoles={['customer']}><NotificationsPage /></PrivateRoute>} />
     </Routes>
+
+
+
+
+
   );
 }

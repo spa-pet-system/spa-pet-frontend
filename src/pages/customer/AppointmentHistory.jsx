@@ -59,6 +59,10 @@ const AppointmentHistory = () => {
         return 'bg-red-100 text-red-800'
       case 'request_cancel':
         return 'bg-red-100 text-red-800'
+      case 'in_progress':
+        return 'bg-blue-100 text-blue-800'
+      case 'waiting_payment':
+        return 'bg-orange-100 text-orange-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }
@@ -155,6 +159,19 @@ const AppointmentHistory = () => {
               <div className="text-sm text-gray-600">Đã xác nhận</div>
             </div>
             <div className="bg-white rounded-lg shadow p-6">
+              <div className="text-2xl font-bold text-orange-500">
+                {appointments.filter(apt => apt.status === 'in_progress').length}
+              </div>
+              <div className="text-sm text-gray-600">Đang thực hiện</div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="text-2xl font-bold text-orange-500">
+                {appointments.filter(apt => apt.status === 'waiting_payment').length}
+              </div>
+              <div className="text-sm text-gray-600">Đang chờ thanh toán</div>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6">
               <div className="text-2xl font-bold text-green-600">
                 {appointments.filter(apt => apt.status === 'completed').length}
               </div>
@@ -194,6 +211,8 @@ const AppointmentHistory = () => {
                             {appointment.status === 'confirmed' && 'Đã xác nhận'}
                             {appointment.status === 'completed' && 'Đã hoàn thành'}
                             {appointment.status === 'cancelled' && 'Đã hủy'}
+                            {appointment.status === 'in_progress' && 'Đang thực hiện'}
+                            {appointment.status === 'waiting_payment' && 'Chờ thanh toán'}
                             {appointment.status === 'request_cancel' && 'Đã gửi yêu cầu hủy'}
                           </span>
                         </div>

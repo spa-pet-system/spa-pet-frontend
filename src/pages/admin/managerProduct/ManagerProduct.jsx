@@ -142,7 +142,7 @@ const ManagerProduct = () => {
                         >
                           Sửa
                         </button>
-                        {product.isActive ? (
+                        {product.isVisible ? (
                           <button
                             className="px-3 py-1 rounded-full bg-red-500 hover:bg-red-600 text-white text-xs font-bold shadow transition"
                             onClick={() => handleLockUnlockProduct(product._id, false)}

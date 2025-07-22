@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { FaTachometerAlt, FaUsers, FaDog, FaConciergeBell, FaBoxOpen, FaClipboardList, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
 
@@ -8,9 +8,12 @@ const menuItems = [
   { label: "Quản lý dịch vụ", icon: <FaConciergeBell />, to: "/admin/services" },
   
   { label: "Quản lý sản phẩm", icon: <FaBoxOpen />, to: "/admin/products" },
-  { label: "Quản lý đơn", icon: <FaConciergeBell />, to: "/admin/orders" },
-  // Quản lý lịch hẹn với submenu
 
+  { label: "Quản lý đơn hàng", icon: <FaClipboardList />, to: "/admin/orders" },
+
+  { label: "Gửi thông báo", icon: <FaConciergeBell />, to: "/admin/send-notification" },
+
+ 
   {
     label: "Quản lý lịch hẹn",
     icon: <FaCalendarAlt />,
@@ -22,6 +25,7 @@ const menuItems = [
       { label: "Đơn đã hoàn thành", to: "/admin/appointments/completed" },
     ]
   },
+
   { label: "Đăng xuất", icon: <FaSignOutAlt />, to: "/logout" },
 ];
 

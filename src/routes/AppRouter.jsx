@@ -29,6 +29,10 @@ import CartPage from "~/pages/customer/CartPage";
 import OrdersPage from "~/pages/customer/OrdersPage";
 import ResetPasswordPage from '~/pages/ResetPasswordPage';
 import ForgotPasswordPage from '~/pages/ForgotPasswordPage';
+
+import SendNotificationPage from '../pages/admin/SendNotificationPage';
+import NotificationsPage from '../pages/customer/NotificationsPage';
+
 import ManagerOrder from '../pages/admin/managerOrder/ManagerOrder';
 import PendingAppointments from '../pages/admin/managerAppointment/PendingAppointments';
 import ConfirmedAppointments from '../pages/admin/managerAppointment/ConfirmedAppointments';
@@ -37,6 +41,7 @@ import CancelledAppointments from '../pages/admin/managerAppointment/CancelledAp
 import RequestCancelAppointments from '../pages/admin/managerAppointment/RequestCancelAppointments';
 import BookingDetail from '../pages/admin/managerAppointment/BookingDetail';
 import OrderDetail from '../pages/admin/managerOrder/OrderDetail';
+
 
 export default function AppRouter() {
   return (
@@ -49,6 +54,7 @@ export default function AppRouter() {
       <Route path="/customer/profile" element={<PrivateRoute allowedRoles={['customer']}><UserProfile /></PrivateRoute>} />
       <Route path="/customer/appointments" element={<PrivateRoute allowedRoles={['customer']}><AppointmentHistory /></PrivateRoute>} />
       <Route path="/customer/orders" element={<PrivateRoute allowedRoles={['customer']}><OrdersPage /></PrivateRoute>} />
+      <Route path="/customer/notifications" element={<PrivateRoute allowedRoles={['customer']}><NotificationsPage /></PrivateRoute>} />
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/service" element={<ServicesPage />} />
@@ -69,6 +75,9 @@ export default function AppRouter() {
       <Route path="/admin/products" element={<ManagerProduct />} />
       <Route path="/admin/products/add" element={<AddProduct />} />
       <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+
+      <Route path="/admin/send-notification" element={<PrivateRoute allowedRoles={['admin']}><SendNotificationPage /></PrivateRoute>} />
+
       <Route path="/admin/orders" element={<ManagerOrder />} />
       <Route path="/admin/orders/detail/:id" element={<OrderDetail />} />
       <Route path="/admin/appointments/pending" element={<PendingAppointments />} />
@@ -77,6 +86,7 @@ export default function AppRouter() {
       <Route path="/admin/appointments/cancelled" element={<CancelledAppointments />} />
       <Route path="/admin/appointments/request-cancel" element={<RequestCancelAppointments />} />
       <Route path="/admin/appointments/detail/:id" element={<BookingDetail />} />
+
       
       <Route
         path="/cart"

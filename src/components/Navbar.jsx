@@ -40,6 +40,9 @@ export default function Navbar() {
         <NavLink to="/shop" className={({ isActive }) => isActive ? activeClass : normalClass}>Shop</NavLink>
         <NavLink to="/news" className={({ isActive }) => isActive ? activeClass : normalClass}>News</NavLink>
         <NavLink to="/contact" className={({ isActive }) => isActive ? activeClass : normalClass}>Contact</NavLink>
+        <Link to="/customer/notifications" className="block py-2 px-4 hover:bg-gray-200 rounded">
+          <span>Thông báo</span>
+        </Link>
       </nav>
       <div className="flex items-center gap-4 text-gray-800">
         <FaSearch />

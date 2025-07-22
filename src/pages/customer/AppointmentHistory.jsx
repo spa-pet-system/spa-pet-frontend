@@ -27,6 +27,26 @@ const AppointmentHistory = () => {
     }
   }
 
+ const handleCancelClick = async (appointment) => {
+  // 1) hỏi lý do
+  const reason = window.prompt(
+    "Nhập lý do bạn muốn hủy lịch:",
+    ""
+  );
+  // nếu người dùng bấm Cancel hoặc không nhập gì thì thôi
+  if (!reason) return;
+
+  try {
+    // 2) gọi API kèm lý do
+    await appointmentService.requestCancelAppointment(appointment._id, { reason });
+    toast.info("Yêu cầu hủy lịch đã được gửi");
+    fetchAppointmentHistory();
+  } catch (err) {
+    console.error(err);
+    toast.error("Không thể gửi yêu cầu hủy");
+  }
+};
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
@@ -37,9 +57,22 @@ const AppointmentHistory = () => {
         return 'bg-green-100 text-green-800'
       case 'cancelled':
         return 'bg-red-100 text-red-800'
+      case 'request_cancel':
+        return 'bg-red-100 text-red-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  const isCancelable = (apt) => {
+    if (!['pending', 'confirmed'].includes(apt.status)) return false
+    // so sánh ngày giờ appointment > now
+    const apptDate = new Date(apt.date)
+    const [h, m] = apt.timeSlot.split(':').map(Number)
+    apptDate.setHours(h, m, 0, 0)
+    console.log("appDate:", apptDate);
+    console.log("now:", new Date());
+    return apptDate > new Date()
   }
 
   const formatDate = (dateString) => {
@@ -135,73 +168,82 @@ const AppointmentHistory = () => {
             </div>
           </div>
 
-        {/* Appointments List */}
-        {appointments.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <div className="text-gray-400 text-6xl mb-4">📅</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Chưa có cuộc hẹn nào</h3>
-            <p className="text-gray-600 mb-6">Bạn chưa đặt lịch dịch vụ nào. Hãy đặt lịch ngay để chăm sóc thú cưng của bạn!</p>
-            <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors">
-              Đặt lịch ngay
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {appointments.map((appointment) => (
-              <div key={appointment._id} className="bg-white rounded-lg shadow hover:shadow-md transition-shadow">
-                <div className="p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center mb-3">
-                        <h3 className="text-xl font-semibold text-gray-900 mr-3">
-                          {appointment.service?.name || 'Dịch vụ không xác định'}
-                        </h3>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(appointment.status)}`}>
-                          {appointment.status === 'pending' && 'Đang chờ'}
-                          {appointment.status === 'confirmed' && 'Đã xác nhận'}
-                          {appointment.status === 'completed' && 'Đã hoàn thành'}
-                          {appointment.status === 'cancelled' && 'Đã hủy'}
-                        </span>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-gray-600">
-                        <div>
-                          <span className="font-medium">Ngày hẹn:</span>
-                          <div>{formatDate(appointment.date)}</div>
+          {/* Appointments List */}
+          {appointments.length === 0 ? (
+            <div className="bg-white rounded-lg shadow p-12 text-center">
+              <div className="text-gray-400 text-6xl mb-4">📅</div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Chưa có cuộc hẹn nào</h3>
+              <p className="text-gray-600 mb-6">Bạn chưa đặt lịch dịch vụ nào. Hãy đặt lịch ngay để chăm sóc thú cưng của bạn!</p>
+              <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors">
+                Đặt lịch ngay
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {appointments.map((appointment) => (
+                <div key={appointment._id} className="relative bg-white rounded-lg shadow hover:shadow-md transition-shadow">
+                  <div className="p-6">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center mb-3">
+                          <h3 className="text-xl font-semibold text-gray-900 mr-3">
+                            {appointment.service?.name || 'Dịch vụ không xác định'}
+                          </h3>
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(appointment.status)}`}>
+                            {appointment.status === 'pending' && 'Đang chờ'}
+                            {appointment.status === 'confirmed' && 'Đã xác nhận'}
+                            {appointment.status === 'completed' && 'Đã hoàn thành'}
+                            {appointment.status === 'cancelled' && 'Đã hủy'}
+                            {appointment.status === 'request_cancel' && 'Đã gửi yêu cầu hủy'}
+                          </span>
                         </div>
-                        <div>
-                          <span className="font-medium">Giờ hẹn:</span>
-                          <div>{appointment.timeSlot}</div>
-                        </div>
-                        <div>
-                          <span className="font-medium">Thú cưng:</span>
-                          <div>{appointment.pet?.name || 'Không xác định'}</div>
-                        </div>
-                        <div>
-                          <span className="font-medium">Thanh toán:</span>
-                          <div className={appointment.isPaid ? 'text-green-600' : 'text-red-600'}>
-                            {appointment.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-gray-600">
+                          <div>
+                            <span className="font-medium">Ngày hẹn:</span>
+                            <div>{formatDate(appointment.date)}</div>
+                          </div>
+                          <div>
+                            <span className="font-medium">Giờ hẹn:</span>
+                            <div>{appointment.timeSlot}</div>
+                          </div>
+                          <div>
+                            <span className="font-medium">Thú cưng:</span>
+                            <div>{appointment.pet?.name || 'Không xác định'}</div>
+                          </div>
+                          <div>
+                            <span className="font-medium">Thanh toán:</span>
+                            <div className={appointment.isPaid ? 'text-green-600' : 'text-red-600'}>
+                              {appointment.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                            </div>
+                          </div>
+                          <div>
+                            <span className="font-medium">Đặt lúc:</span>
+                            <div>{formatDateTime(appointment.createdAt)}</div>
                           </div>
                         </div>
-                        <div>
-                          <span className="font-medium">Đặt lúc:</span>
-                          <div>{formatDateTime(appointment.createdAt)}</div>
-                        </div>
+
+                        {appointment.note && (
+                          <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                            <span className="font-medium text-gray-700">Ghi chú:</span>
+                            <p className="text-gray-600 mt-1">{appointment.note}</p>
+                          </div>
+                        )}
                       </div>
-                      
-                      {appointment.note && (
-                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                          <span className="font-medium text-gray-700">Ghi chú:</span>
-                          <p className="text-gray-600 mt-1">{appointment.note}</p>
-                        </div>
-                      )}
                     </div>
                   </div>
+                  {isCancelable(appointment) && (
+                    <button
+                      onClick={() => handleCancelClick(appointment)}
+                      className="absolute top-4 right-4 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition"
+                    >
+                      Hủy lịch
+                    </button>
+                  )}
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </MainLayout>

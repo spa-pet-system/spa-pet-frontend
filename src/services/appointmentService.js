@@ -64,3 +64,9 @@ export const createNewAppointment = async (appointment) => {
   return res.data
 }
 
+// services/appointmentService.js
+export const requestCancelAppointment = (appointmentId, { reason }) =>
+    axios.post(`/appointments/${appointmentId}/cancel-request`, { reason })
+;
+
+

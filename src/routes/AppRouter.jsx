@@ -29,8 +29,19 @@ import CartPage from "~/pages/customer/CartPage";
 import OrdersPage from "~/pages/customer/OrdersPage";
 import ResetPasswordPage from '~/pages/ResetPasswordPage';
 import ForgotPasswordPage from '~/pages/ForgotPasswordPage';
+
 import SendNotificationPage from '../pages/admin/SendNotificationPage';
 import NotificationsPage from '../pages/customer/NotificationsPage';
+
+import ManagerOrder from '../pages/admin/managerOrder/ManagerOrder';
+import PendingAppointments from '../pages/admin/managerAppointment/PendingAppointments';
+import ConfirmedAppointments from '../pages/admin/managerAppointment/ConfirmedAppointments';
+import CompletedAppointments from '../pages/admin/managerAppointment/CompletedAppointments';
+import CancelledAppointments from '../pages/admin/managerAppointment/CancelledAppointments';
+import RequestCancelAppointments from '../pages/admin/managerAppointment/RequestCancelAppointments';
+import BookingDetail from '../pages/admin/managerAppointment/BookingDetail';
+import OrderDetail from '../pages/admin/managerOrder/OrderDetail';
+
 
 export default function AppRouter() {
   return (
@@ -64,7 +75,18 @@ export default function AppRouter() {
       <Route path="/admin/products" element={<ManagerProduct />} />
       <Route path="/admin/products/add" element={<AddProduct />} />
       <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+
       <Route path="/admin/send-notification" element={<PrivateRoute allowedRoles={['admin']}><SendNotificationPage /></PrivateRoute>} />
+
+      <Route path="/admin/orders" element={<ManagerOrder />} />
+      <Route path="/admin/orders/detail/:id" element={<OrderDetail />} />
+      <Route path="/admin/appointments/pending" element={<PendingAppointments />} />
+      <Route path="/admin/appointments/confirmed" element={<ConfirmedAppointments />} />
+      <Route path="/admin/appointments/completed" element={<CompletedAppointments />} />
+      <Route path="/admin/appointments/cancelled" element={<CancelledAppointments />} />
+      <Route path="/admin/appointments/request-cancel" element={<RequestCancelAppointments />} />
+      <Route path="/admin/appointments/detail/:id" element={<BookingDetail />} />
+
       
       <Route
         path="/cart"

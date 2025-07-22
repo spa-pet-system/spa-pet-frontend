@@ -19,7 +19,7 @@ export default function ShopPage() {
     });
     if (searchTerm) query.append("name", searchTerm);
 
-    fetch(`http://localhost:3000/api/products?${query.toString()}`)
+    fetch(`https://spa-pet-backend.onrender.com/api/products?${query.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.products);

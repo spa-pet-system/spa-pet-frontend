@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 // });
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'https://spa-pet-backend.onrender.com/api',
   withCredentials: true // 💡 Phải có dòng này để gửi cookie
 });
 

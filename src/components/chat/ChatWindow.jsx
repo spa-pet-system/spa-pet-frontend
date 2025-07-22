@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import axios from '../../api/axiosClient';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const socket = io('http://localhost:3000'); // hoặc URL backend thật của bạn
+const socket = io('https://spa-pet-backend.onrender.com'); // hoặc URL backend thật của bạn
 
 export default function ChatWindow({ onClose }) {
   const { user } = useContext(AuthContext);

@@ -10,7 +10,7 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:3000/api/products/${id}`)
+      fetch(`https://spa-pet-backend.onrender.com/api/products/${id}`)
         .then((res) => res.json())
         .then((data) => setProduct(data))
         .catch((err) => console.error("Lỗi khi load chi tiết sản phẩm:", err));

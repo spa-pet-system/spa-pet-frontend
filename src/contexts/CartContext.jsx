@@ -7,7 +7,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/cart', {
+      const res = await fetch('https://spa-pet-backend.onrender.com/api/cart', {
         credentials: 'include'
       });
       const data = await res.json();

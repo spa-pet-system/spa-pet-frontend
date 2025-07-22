@@ -13,4 +13,9 @@ export default defineConfig({
       '~': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    host: '0.0.0.0',                           // bind mọi interface
+    port: 5173,    // lấy từ ENV hoặc fallback
+    strictPort: true                           // nếu port đang mở, fail thẳng
+  }
 })

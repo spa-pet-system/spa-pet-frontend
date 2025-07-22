@@ -31,9 +31,9 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
-  const onSubmit = async ({phone, password}) => {
-    try {
-      const data = await login(phone, password);
+  const onSubmit = async ({ phone, password }) => {
+  try {
+     const data = await login(phone, password);
       const profile = await getProfile();
       setUser(profile);
       toast.success('Đăng nhập thành công!');
@@ -41,11 +41,12 @@ export default function LoginPage() {
       if (profile.role === 'admin') {
         navigate('/admin');
       }
-      else navigate('/customer');
+      else navigate('/');
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-orange-50">
@@ -93,7 +94,7 @@ export default function LoginPage() {
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Nhớ mật khẩu
               </label>
-              <a href="#" className="text-orange-500 hover:underline">Quên mật khẩu?</a>
+              <Link to="/forgot-password" className="text-orange-500 hover:underline">Quên mật khẩu?</Link>
             </div>
 
             <div className="flex items-center my-4">

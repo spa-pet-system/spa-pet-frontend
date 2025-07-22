@@ -1,39 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import socket from '../utils/socket'
+import axios from '../../api/axiosClient';
 
-export default function ChatWindow({ onClose }) {
+export default function ChatWidget({ onClose }) {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
 
-  useEffect(() => {
-    // Lắng nghe tin nhắn server gửi về
-    socket.on('receiveMessage', (msg) => {
-      setMessages(prev => [...prev, msg])
-    })
-
-    return () => {
-      socket.off('receiveMessage')
-    }
-  }, [])
-
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!input.trim()) return
 
-    const message = {
+    const userMessage = {
       sender: 'user',
       content: input,
       timestamp: new Date(),
     }
 
-    setMessages(prev => [...prev, message])
-    socket.emit('sendMessage', message)
+    setMessages(prev => [...prev, userMessage])
     setInput('')
+
+    // Gọi API AI
+    try {
+      const res = await axios.post('/chat/ai', { message: input });
+      const aiMessage = {
+        sender: 'ai',
+        content: res.data.reply,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (err) {
+      setMessages(prev => [...prev, { sender: 'ai', content: 'AI lỗi, thử lại sau!', timestamp: new Date() }]);
+    }
   }
 
   return (
     <div className="w-80 h-96 bg-white shadow-lg rounded-lg flex flex-col">
       <div className="flex justify-between items-center p-3 border-b">
-        <h3 className="font-semibold">Chat với Admin</h3>
+        <h3 className="font-semibold">Chat với AI</h3>
         <button onClick={onClose} className="text-gray-600 hover:text-gray-900">Đóng</button>
       </div>
       <div

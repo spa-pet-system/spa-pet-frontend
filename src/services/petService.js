@@ -24,3 +24,9 @@ export const createPet = async (petData) => {
   }
 };
 
+export const getTotalPets = async () => {
+  // Đúng endpoint với backend hiện tại
+  const res = await axios.get('/customer/pets/admin/count');
+  return res.data.totalPets;
+};
+

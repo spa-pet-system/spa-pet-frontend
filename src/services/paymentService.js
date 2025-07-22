@@ -74,7 +74,7 @@ const paymentService = {
   createOrder,
   getUserOrders,
   getOrderById,
-  confirmPayment
+  confirmPayment,
 }
 
 export default paymentService

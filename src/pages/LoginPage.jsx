@@ -33,23 +33,18 @@ export default function LoginPage() {
 
   const onSubmit = async ({ phone, password }) => {
   try {
-    const data = await login(phone, password);
+     const data = await login(phone, password);
+      const profile = await getProfile();
+      setUser(profile);
+      toast.success('Đăng nhập thành công!');
 
-    // Lưu token vào localStorage
-    localStorage.setItem("token", data.accessToken);
-
-    const profile = await getProfile();
-    setUser(profile);
-    toast.success('Đăng nhập thành công!');
-
-    if (profile.role === 'admin') {
-      navigate('/admin');
-    } else {
-      navigate('/customer');
+      if (profile.role === 'admin') {
+        navigate('/admin');
+      }
+      else navigate('/');
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
     }
-  } catch (err) {
-    toast.error(err?.response?.data?.message || 'Đăng nhập thất bại');
-  }
 };
 
 
@@ -99,7 +94,7 @@ export default function LoginPage() {
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Nhớ mật khẩu
               </label>
-              <a href="#" className="text-orange-500 hover:underline">Quên mật khẩu?</a>
+              <Link to="/forgot-password" className="text-orange-500 hover:underline">Quên mật khẩu?</Link>
             </div>
 
             <div className="flex items-center my-4">

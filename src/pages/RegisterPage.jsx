@@ -11,6 +11,10 @@ const schema = yup.object().shape({
     .string()
     .required('Tên là bắt buộc')
     .min(2, 'Tên phải từ 2 ký tự'),
+  email: yup
+    .string()
+    .email('Email không hợp lệ')
+    .required('Email là bắt buộc'),
   phone: yup
     .string()
     .required('Số điện thoại là bắt buộc')
@@ -36,9 +40,9 @@ export default function RegisterPage() {
 
   const navigate = useNavigate();
 
-  const onSubmit = async ({ name, phone, password }) => {
+  const onSubmit = async ({ name, phone, password, email }) => {
     try {
-      await registerByPhone(name, phone, password);
+      await registerByPhone(name, phone, password, email);
       toast.success('Tạo tài khoản thành công! Vui lòng đăng nhập.');
       navigate('/login');
     } catch (err) {
@@ -73,7 +77,17 @@ export default function RegisterPage() {
             <div>
               <input
                 type="text"
-                placeholder="Số điện thoại"
+                placeholder="Email"
+                {...register('email')}
+                className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-orange-400"
+              />
+              {errors.email && <p className="text-red-500 mt-1">{errors.email.message}</p>}
+            </div>
+ <span>.</span>
+            <div>
+              <input
+                type="text"
+                placeholder="Số điện thoại đăng nhập"
                 {...register('phone')}
                 className="border rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-orange-400"
               />

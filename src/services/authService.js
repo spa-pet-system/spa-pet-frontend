@@ -13,9 +13,9 @@ export const login = async (phone, password) => {
 
 };
 
-export const registerByPhone = async (name, phone, password) => {
+export const registerByPhone = async (name, phone, password, email) => {
     try {
-        const res = await axios.post('/auth/register', { phone, password, name });
+        const res = await axios.post('/auth/register', { phone, password, name, email });
         setToken(res.data.accessToken);
         return res.data;
     } catch (error) {

@@ -48,15 +48,6 @@ const CompletedAppointments = () => {
     }
   };
 
-  const handleDelete = async (appointmentId) => {
-    if (!window.confirm("Bạn có chắc muốn xóa lịch hẹn này?")) return;
-    try {
-      await axios.delete(`/admin/appointments/${appointmentId}`);
-      fetchAppointments();
-    } catch (err) {
-      alert("Lỗi xóa lịch hẹn");
-    }
-  };
 
   return (
     <div className="flex">

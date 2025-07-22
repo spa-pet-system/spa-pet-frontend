@@ -122,7 +122,7 @@ const ConfirmedAppointments = () => {
                       <button
                         className="bg-green-500 text-white px-2 py-1 rounded"
                         onClick={() => handleCompleteOrder(app._id)}
-                      >Hoàn thành đơn</button>
+                      >Hoàn thành lịch hẹn</button>
                       <button
                         className="bg-blue-500 text-white px-2 py-1 rounded"
                         onClick={() => navigate(`/admin/appointments/detail/${app._id}`)}

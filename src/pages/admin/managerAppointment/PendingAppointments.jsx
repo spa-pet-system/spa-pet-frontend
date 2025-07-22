@@ -16,7 +16,7 @@ const PendingAppointments = () => {
 
   useEffect(() => {
     fetchAppointments();
-  }, [page, search]);
+  }, [page, search]); 
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -109,7 +109,7 @@ const PendingAppointments = () => {
                       <button
                         className="bg-green-500 text-white px-2 py-1 rounded"
                         onClick={() => handleUpdateStatus(app._id, 'confirmed')}
-                      >Xác nhận đơn hàng</button>
+                      >Xác nhận lịch hẹn </button>
                       <button
                         className="bg-blue-500 text-white px-2 py-1 rounded"
                         onClick={() => navigate(`/admin/appointments/detail/${app._id}`)}

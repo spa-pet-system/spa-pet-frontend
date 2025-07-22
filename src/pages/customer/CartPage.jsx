@@ -1,15 +1,55 @@
 import { useEffect, useState } from 'react';
 import MainLayout from '~/layouts/MainLayout';
 import { getCart, updateCartItem, removeCartItem } from '~/services/cartService';
-import { useNavigate } from 'react-router-dom';
+import { createPaymentLink, createOrder, confirmPayment } from '~/services/paymentService';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function CartPage() {
   const [cart, setCart] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     fetchCart();
   }, []);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const payment = urlParams.get('payment');
+    const orderCode = urlParams.get('orderCode');
+    
+    if (payment === 'success' && orderCode) {
+      // Check payment status and handle success
+      handlePaymentSuccess(orderCode);
+    } else if (payment === 'cancelled') {
+      toast.error('Thanh toán đã bị hủy');
+      // Clear URL parameters
+      navigate('/cart', { replace: true });
+    }
+  }, [location.search, navigate]);
+
+  const handlePaymentSuccess = async (orderCode) => {
+    try {
+      // Confirm payment with backend
+      const result = await confirmPayment(orderCode);
+      
+      if (result.success) {
+        toast.success('Thanh toán thành công!');
+        // Clear cart
+        await fetchCart();
+        // Navigate to orders page
+        navigate('/customer/orders');
+      } else {
+        toast.error(result.message || 'Có lỗi xảy ra khi xác nhận thanh toán');
+      }
+    } catch (error) {
+      console.error('Error handling payment success:', error);
+      toast.error('Có lỗi xảy ra khi xử lý thanh toán');
+    }
+  };
 
   const fetchCart = async () => {
     try {
@@ -35,6 +75,53 @@ export default function CartPage() {
     if (!item.product) return sum;
     return sum + item.product.finalPrice * item.quantity;
   }, 0);
+
+  const handleCheckout = async () => {
+    if (!cart || cart.items.length === 0) {
+      toast.error('Giỏ hàng trống!');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      if (paymentMethod === 'cod') {
+        // Handle COD payment
+        const orderData = { paymentMethod: 'cod' };
+        const result = await createOrder(orderData);
+        
+        if (result.success) {
+          toast.success('Đặt hàng thành công!');
+          navigate('/customer/orders'); // Navigate to orders page
+        }
+      } else if (paymentMethod === 'qr') {
+        // Handle QR payment
+        const paymentData = {
+          items: cart.items.map(item => ({
+            productId: item.product._id,
+            name: item.product.name,
+            quantity: item.quantity,
+            price: item.product.finalPrice
+          })),
+          total: total
+        };
+        
+        const result = await createPaymentLink(paymentData);
+        
+        if (result.success && result.data.checkoutUrl) {
+          // Redirect to PayOS checkout page
+          window.location.href = result.data.checkoutUrl;
+        } else {
+          toast.error('Không thể tạo liên kết thanh toán');
+        }
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error(error.response?.data?.message || 'Có lỗi xảy ra khi thanh toán');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   if (!cart) return <p className="p-6">Đang tải giỏ hàng...</p>;
 
@@ -105,11 +192,41 @@ export default function CartPage() {
         </div>
 
         {cart.items.length > 0 && (
-          <div className="mt-10 flex flex-col items-end gap-4">
+          <div className="mt-10 flex flex-col items-end gap-6">
             <div className="text-xl font-semibold">
               Tổng tiền:{' '}
               <span className="text-orange-600 font-bold">{total.toLocaleString()}đ</span>
             </div>
+            
+            {/* Payment Method Selection */}
+            <div className="w-full max-w-md">
+              <h3 className="text-lg font-semibold mb-3">Chọn phương thức thanh toán:</h3>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cod"
+                    checked={paymentMethod === 'cod'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="text-orange-500"
+                  />
+                  <span>💵 Thanh toán khi nhận hàng (COD)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="qr"
+                    checked={paymentMethod === 'qr'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="text-orange-500"
+                  />
+                  <span>📱 Thanh toán QR Code</span>
+                </label>
+              </div>
+            </div>
+            
             <div className="flex gap-4 flex-wrap">
               <button
                 className="px-6 py-2 border border-gray-400 rounded hover:bg-gray-100"
@@ -117,8 +234,12 @@ export default function CartPage() {
               >
                 ← Quay lại Shop
               </button>
-              <button className="px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">
-                Thanh toán
+              <button 
+                className="px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleCheckout}
+                disabled={isProcessing}
+              >
+                {isProcessing ? 'Đang xử lý...' : 'Thanh toán'}
               </button>
             </div>
           </div>

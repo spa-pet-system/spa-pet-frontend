@@ -16,6 +16,18 @@ export default function BookingStep1({
   const [timeSlots, setTimeSlots] = useState([]);
   const [slotStatus, setSlotStatus] = useState({});
 
+  const isPastTimeSlot = (slot) => {
+    if (selectedDate !== getTodayVN()) return false;
+
+    const [h, m] = slot.split(":").map(Number);
+    const now = new Date();
+    const slotTime = new Date();
+    slotTime.setHours(h, m, 0, 0);
+
+    return now > slotTime;
+  };
+
+
   useEffect(() => {
     const fetchServices = async () => {
       const res = await getServices();
@@ -41,7 +53,7 @@ export default function BookingStep1({
         try {
           const data = await getSlotStatus(selectedService, selectedDate);
           console.log(data);
-          
+
           setSlotStatus(data);
         } catch (err) {
           console.error("Lỗi khi load slot:", err);
@@ -108,12 +120,12 @@ export default function BookingStep1({
           return (
             <button
               key={slot}
-              disabled={isFull}
-              className={`p-2 rounded border transition text-sm ${isFull
-                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                  : selectedTime === slot
-                    ? "bg-yellow-500 text-white"
-                    : "bg-white hover:bg-yellow-100"
+              disabled={isFull || isPastTimeSlot(slot)}
+              className={`p-2 rounded border transition text-sm ${isFull || isPastTimeSlot(slot)
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : selectedTime === slot
+                  ? "bg-yellow-500 text-white"
+                  : "bg-white hover:bg-yellow-100"
                 }`}
               onClick={() => !isFull && setSelectedTime(slot)}
             >

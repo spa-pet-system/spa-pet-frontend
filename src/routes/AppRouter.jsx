@@ -29,6 +29,7 @@ import CartPage from "~/pages/customer/CartPage";
 import OrdersPage from "~/pages/customer/OrdersPage";
 import ResetPasswordPage from '~/pages/ResetPasswordPage';
 import ForgotPasswordPage from '~/pages/ForgotPasswordPage';
+import DashboardPage from '../pages/admin/dashboardAdmin/DashboardPage';
 
 export default function AppRouter() {
   return (
@@ -52,7 +53,14 @@ export default function AppRouter() {
 
 
       {/* Admin router */}
-      <Route path="/admin" element={<PrivateRoute allowedRoles={['admin']}><AdminPage /></PrivateRoute>} />
+      <Route
+        path="/admin"
+        element={
+          <PrivateRoute allowedRoles={['admin']}>
+            <DashboardPage />
+          </PrivateRoute>
+        }
+      />
       <Route path="/admin/users" element={<ManagerUser />} />
       <Route path="/admin/users/:id" element={<UserDetail />} />
       <Route path="/admin/services" element={<ServiceManager />} />

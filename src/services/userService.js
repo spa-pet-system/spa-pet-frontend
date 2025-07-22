@@ -49,3 +49,8 @@ export const changePassword = async (passwordData) => {
   const res = await axios.put('/auth/change-password', passwordData);
   return res.data;
 };
+
+export const getCustomerCount = async () => {
+  const res = await axios.get('/admin/users/count');
+  return res.data.totalCustomers;
+};

@@ -1,23 +1,38 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MainLayout from "~/layouts/MainLayout";
-import background from "~/assets/backgr-xanhvang-expanded.png";
 import { addToCart } from "~/services/cartService";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sort, setSort] = useState("createdAt_desc");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [addedProductId, setAddedProductId] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/products")
+    const query = new URLSearchParams({
+      page,
+      limit: 8,
+      sort,
+    });
+    if (searchTerm) query.append("name", searchTerm);
+
+    fetch(`http://localhost:3000/api/products?${query.toString()}`)
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) => {
+        setProducts(data.products);
+        setTotalPages(data.totalPages);
+      })
       .catch((err) => console.error("Lỗi khi load sản phẩm:", err));
-  }, []);
+  }, [page, sort, searchTerm]);
 
   const handleAddToCartClick = async (product) => {
     try {
       await addToCart(product._id, 1);
-      alert("✅ Đã thêm vào giỏ hàng!");
+      setAddedProductId(product._id); // Đánh dấu sản phẩm đã được thêm
+      setTimeout(() => setAddedProductId(null), 2000); // Xoá sau 2s
     } catch {
       alert("Lỗi khi thêm vào giỏ hàng");
     }
@@ -25,87 +40,146 @@ export default function ShopPage() {
 
   return (
     <MainLayout>
-      {/* Banner */}
-      <div
-        className="w-full h-[600px] bg-cover bg-center flex flex-col md:flex-row items-center px-6 md:px-28 pt-[80px] pb-[40px]"
-        style={{ backgroundImage: `url(${background})` }}
-      >
-        <div className="flex-1 text-white md:pr-12">
-          <h3 className="text-lg md:text-xl font-semibold mb-2 text-orange-200 tracking-widest uppercase">
-            All Products
-          </h3>
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">
-            Save <span className="text-orange-300">50%</span> Off
-          </h1>
-          <p className="text-md md:text-lg mb-6 text-orange-100 max-w-md leading-relaxed">
-            Make your furry friend happy with our best-selling pet products!
-          </p>
-          <button className="bg-orange-300 hover:bg-orange-400 text-white font-semibold px-8 py-3 rounded-full shadow-md transition duration-300 ease-in-out">
-            🛍️ Shop Now
-          </button>
-        </div>
-
-        <div className="flex-1 hidden md:flex justify-center">
-          <img
-            src="/assets/pet-banner.png"
-            alt="Happy Pet"
-            className="w-full max-w-md rounded-2xl shadow-lg"
-          />
-        </div>
+      <div className="bg-orange-50 py-12 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+          🛍️ Sản phẩm mới nhất
+        </h1>
+        <p className="text-gray-600">
+          Hãy chọn món đồ yêu thích cho thú cưng của bạn!
+        </p>
       </div>
 
-      {/* Product List */}
-      <div className="px-6 md:px-28 py-12 bg-white">
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
-          Sản phẩm nổi bật 🐾
-        </h2>
+      <div className="px-6 md:px-28 py-10 bg-white">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+          <h2 className="text-xl font-semibold text-gray-700">
+            Tất cả sản phẩm ({products.length})
+          </h2>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <input
+              type="text"
+              placeholder="Tìm kiếm sản phẩm..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setPage(1);
+              }}
+              className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-orange-300 focus:border-orange-400"
+            />
+
+            <div className="flex items-center gap-2">
+              <label htmlFor="sort" className="text-gray-600 text-sm">
+                Sắp xếp:
+              </label>
+              <select
+                id="sort"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-orange-300 focus:border-orange-400"
+              >
+                <option value="name_asc">Tên A-Z</option>
+                <option value="name_desc">Tên Z-A</option>
+                <option value="price_asc">Giá tăng dần</option>
+                <option value="price_desc">Giá giảm dần</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
         {products.length === 0 ? (
           <p className="text-gray-500">Đang tải sản phẩm...</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <div
-                key={product._id}
-                className="border rounded-xl p-4 shadow hover:shadow-lg transition"
-              >
-                <Link to={`/products/${product._id}`} className="block">
-                  <img
-                    src={product.images?.[0] || "/default-product.jpg"}
-                    alt={product.name}
-                    className="w-full h-48 object-cover rounded-md mb-3"
-                  />
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 line-clamp-2">
-                    {product.description}
-                  </p>
-                </Link>
-
-                <div className="mt-2">
-                  <span className="text-orange-500 font-bold text-xl">
-                    {product.finalPrice?.toLocaleString()}đ
-                  </span>
-                  {product.discount > 0 && (
-                    <span className="text-sm line-through text-gray-400 ml-2">
-                      {product.price.toLocaleString()}đ
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleAddToCartClick(product);
-                  }}
-                  className="mt-4 bg-orange-300 hover:bg-orange-400 text-white px-4 py-2 rounded-full w-full"
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <div
+                  key={product._id}
+                  className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
                 >
-                  Thêm vào giỏ
+                  <Link to={`/products/${product._id}`} className="block group">
+                    <img
+                      src={product.images?.[0] || "/default-product.jpg"}
+                      alt={product.name}
+                      className="w-full h-48 object-cover rounded-md mb-3 group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <h3 className="text-lg font-semibold text-gray-800 group-hover:text-orange-500 transition">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 line-clamp-2 min-h-[40px]">
+                      {product.description}
+                    </p>
+                  </Link>
+
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-orange-500 font-bold text-lg">
+                      {product.finalPrice?.toLocaleString()}đ
+                    </span>
+                    {product.discount > 0 && (
+                      <span className="text-sm text-gray-400 line-through ml-2">
+                        {product.price.toLocaleString()}đ
+                      </span>
+                    )}
+                  </div>
+                  {/* Số lượng tồn kho */}
+                  <p className="text-sm text-gray-600 mt-1">
+                    {product.stock > 0
+                      ? `🗃️ Còn lại ${product.stock} sản phẩm trong kho`
+                      : "❌ Hết hàng"}
+                  </p>
+                      {addedProductId === product._id && (
+                    <p className="mt-4 text-green-600 font-semibold animate-pulse">
+                      ✅ Đã thêm vào giỏ hàng!
+                    </p>
+                  )}
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleAddToCartClick(product);
+                    }}
+                    disabled={product.stock <= 0}
+                    className={`mt-4 ${
+                      product.stock <= 0
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-orange-400 hover:bg-orange-500"
+                    } text-white font-medium px-4 py-2 rounded-full w-full transition`}
+                  >
+                    {product.stock <= 0 ? "Hết hàng ❌" : "Thêm vào giỏ 🛒"}
+                  </button>
+                  
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-center mt-12 space-x-2">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="px-3 py-1 border rounded disabled:opacity-50"
+              >
+                ←
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`px-3 py-1 border rounded ${
+                    page === p ? "bg-orange-400 text-white" : ""
+                  }`}
+                >
+                  {p}
                 </button>
-              </div>
-            ))}
-          </div>
+              ))}
+              <button
+                onClick={() =>
+                  setPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={page === totalPages}
+                className="px-3 py-1 border rounded disabled:opacity-50"
+              >
+                →
+              </button>
+            </div>
+          </>
         )}
       </div>
     </MainLayout>

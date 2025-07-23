@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import PriceTable from "~/components/service/priceTable";
 
 
 export default function ServicesPage() {
@@ -143,6 +144,8 @@ export default function ServicesPage() {
                         </div>
                     </div>
                 </div>
+
+                <PriceTable/>
 
                 {/* Section: Services được load từ DB */}
                 <div className="mt-10 grid grid-cols-1 gap-10">

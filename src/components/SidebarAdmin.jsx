@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { FaTachometerAlt, FaUsers, FaDog, FaConciergeBell, FaBoxOpen, FaClipboardList, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
 
@@ -8,20 +8,27 @@ const menuItems = [
   { label: "Quản lý dịch vụ", icon: <FaConciergeBell />, to: "/admin/services" },
   
   { label: "Quản lý sản phẩm", icon: <FaBoxOpen />, to: "/admin/products" },
-  { label: "Quản lý đơn", icon: <FaConciergeBell />, to: "/admin/orders" },
-  // Quản lý lịch hẹn với submenu
 
+  { label: "Quản lý đơn hàng", icon: <FaClipboardList />, to: "/admin/orders" },
+
+  { label: "Gửi thông báo", icon: <FaConciergeBell />, to: "/admin/send-notification" },
+
+ 
   {
     label: "Quản lý lịch hẹn",
     icon: <FaCalendarAlt />,
     subMenu: [
       { label: "Duyệt đơn", to: "/admin/appointments/pending" },
       { label: "Đã xác nhận", to: "/admin/appointments/confirmed" },
+      { label: "Đang tiến hành", to: "/admin/appointments/in_progress" },
+      { label: "Chờ thanh toán", to: "/admin/appointments/waiting_payment" },
+      { label: "Hoàn thành", to: "/admin/appointments/completed" },
       { label: "Yêu cầu huỷ", to: "/admin/appointments/request-cancel" },
       { label: "Đơn đã huỷ", to: "/admin/appointments/cancelled" },
       { label: "Đơn đã hoàn thành", to: "/admin/appointments/completed" },
     ]
   },
+
   { label: "Đăng xuất", icon: <FaSignOutAlt />, to: "/logout" },
 ];
 

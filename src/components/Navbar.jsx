@@ -3,6 +3,7 @@ import { FaSearch, FaHeart, FaShoppingCart, FaBell } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 import axios from "~/api/axiosClient";
 import { AuthContext } from "~/contexts/AuthContext";
+import logo from "~/assets/logo.jpg"; // Giả sử bạn có logo ở đây
 
 export default function Navbar() {
   const { user } = useContext(AuthContext);
@@ -48,7 +49,7 @@ export default function Navbar() {
     <div className="bg-white px-6 py-4 flex justify-between items-center shadow-md ml-28 mr-28 rounded-md">
       {/* Logo */}
       <div className="flex items-center gap-2">
-        <img src="/logo.png" alt="logo" className="w-8 h-8" />
+        <img src={logo} alt="logo" className="w-8 h-8" />
         <span className="text-xl font-bold text-orange-500">Patte</span>
       </div>
 
